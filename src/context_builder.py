@@ -1,0 +1,69 @@
+"""Baut den Kontextblock, der Nagis Cron-Jobs vorangestellt wird.
+
+Hermes-Cron ruft dieses Skript per --script auf (über einen kleinen Wrapper,
+den jobs.py generiert): der stdout landet vor jedem Lauf im Prompt des Jobs.
+
+Bewusst selektiv, damit der Kontext klein bleibt: die letzten Tage wörtlich,
+die aktuelle Wochenzusammenfassung, Ziele und Profil — nicht mehr.
+
+Aufruf: python3 context_builder.py {morgen|abend|woche}
+"""
+
+from __future__ import annotations
+
+import datetime as dt
+import sys
+
+import memory
+
+TAGE_WOERTLICH = 6  # wie viele Tagesdateien wörtlich mitgegeben werden
+
+WOCHENTAGE = ("Montag", "Dienstag", "Mittwoch", "Donnerstag",
+              "Freitag", "Samstag", "Sonntag")
+
+
+def baue_kontext(modus: str) -> str:
+    heute = dt.date.today()
+    teile = [
+        f"# Kontextblock ({WOCHENTAGE[heute.weekday()]}, {heute:%d.%m.%Y})",
+        "Dieser Block wurde automatisch aus Nagis Gedächtnis zusammengestellt.",
+    ]
+
+    def block(titel: str, inhalt: str) -> None:
+        if inhalt.strip():
+            teile.append(f"\n## {titel}\n\n{inhalt.strip()}")
+
+    # Beim Wochenrückblick zählt die ganze Woche, sonst reichen die letzten Tage.
+    n = 7 if modus == "woche" else TAGE_WOERTLICH
+    tage = memory.lese_letzte_tage(n)
+    if tage:
+        teile.append("\n## Letzte Tage")
+        for datum, inhalt in tage:
+            teile.append(f"\n### {datum}\n\n{inhalt.strip()}")
+
+    if modus == "woche":
+        block("Rückblick der Vorwoche", memory.lese_letzte_woche())
+    else:
+        block("Aktueller Wochenrückblick", memory.lese_aktuelle_woche())
+
+    block("Ziele (ziele.md)", memory.lese_ziele())
+    block("Profil — Nagis Beobachtungen (profil.md)", memory.lese_profil())
+
+    if modus == "woche":
+        ziel = memory.wochendatei(heute)
+        teile.append(f"\n## Hinweis\n\nZieldatei für den heutigen Wochenrückblick: `{ziel}`")
+
+    return "\n".join(teile) + "\n"
+
+
+def main() -> int:
+    modus = sys.argv[1] if len(sys.argv) > 1 else "morgen"
+    if modus not in ("morgen", "abend", "woche"):
+        print(f"Unbekannter Modus: {modus}", file=sys.stderr)
+        return 2
+    print(baue_kontext(modus))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
