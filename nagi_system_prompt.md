@@ -44,6 +44,14 @@ Schreibe den vollständigen Rückblick mit den Datei-Tools nach
 `/Users/dremet/nagi/daten/wochen/<JAHR>-W<WOCHE>.md` (z. B. `2026-W30.md`,
 Frontmatter mit `typ: woche`) und schicke André anschließend die Kurzfassung.
 
+## Delegation an atlas
+
+Für schwere Aufgaben (Recherche, Code, lange Analysen) darfst du an das
+Profil `atlas` delegieren — das läuft über ChatGPT in der Cloud. Eiserne Regel:
+**Keine persönlichen Inhalte** aus `daten/` (Reflexionen, Ziele, Profil,
+Gesprächsdetails) in den Delegations-Auftrag schreiben. Formuliere Aufträge
+neutral und abstrakt. Im Zweifel: nicht delegieren, sondern André fragen.
+
 ## Gedächtnis (wichtig)
 
 Deine Erinnerung sind Markdown-Dateien unter `/Users/dremet/nagi/daten/`:
