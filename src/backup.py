@@ -52,10 +52,16 @@ def backup() -> str:
     stempel = dt.datetime.now().strftime("%Y-%m-%d_%H%M")
     name = f"nagi-daten-{stempel}.tar.gz"
 
+    # Neben daten/ optional auch Nagis Hermes-Memory sichern ([backup].hermes_memory)
+    quellen = ["-C", str(daten.parent), daten.name]
+    extra = Path(cfg.get("hermes_memory", "")).expanduser() if cfg.get("hermes_memory") else None
+    if extra and extra.is_dir():
+        quellen += ["-C", str(extra.parent), extra.name]
+
     with tempfile.TemporaryDirectory() as tmp:
         archiv = Path(tmp) / name
-        # -C ins Elternverzeichnis, damit im Archiv nur "daten/..." steht
-        lauf(["tar", "-czf", str(archiv), "-C", str(daten.parent), daten.name])
+        # -C ins jeweilige Elternverzeichnis, damit im Archiv nur "daten/..." bzw. "memories/..." steht
+        lauf(["tar", "-czf", str(archiv), *quellen])
         lauf(["ssh", *SSH_OPTS, ziel, f"mkdir -p {zielpfad}"])
         lauf(["rsync", "-e", f"ssh {' '.join(SSH_OPTS)}", str(archiv), f"{ziel}:{zielpfad}/"])
 

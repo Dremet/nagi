@@ -27,4 +27,5 @@ host = "37.221.198.218"          # scarecrow
 user = "dremet"
 zielpfad = "/home/dremet/nagi-backup/"
 rotation = 14                    # so viele Archive bleiben auf dem Server
+hermes_memory = "~/.hermes/profiles/nagi/memories"  # Nagis Hermes-Memory mitsichern
 verschluesselung = "none"        # TODO: "age" — Schlüssel bliebe dann lokal!
