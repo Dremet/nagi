@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════
+# DATENSCHUTZ — nicht verhandelbar.
+# Persönliche Daten (Reflexionen, Gedächtnis, Ziele) bleiben LOKAL.
+# Diese Regeln stellen das technisch sicher. NIEMALS aufweichen.
+# ═══════════════════════════════════════════════════════════════════
+
+# Meine persönlichen Daten — komplett, an jedem Ort im Repo
+daten/
+**/daten/
+
+# Secrets & echte Konfiguration (Vorlage settings.example.toml ist NICHT ignoriert)
+config/settings.toml
+*.env
+*.key
+*.age
+
+# Sicherheitsnetz: lokale Backup-Artefakte niemals committen
+*.tar.gz
+backups/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS / Editor
+.DS_Store
+.vscode/
+.idea/
