@@ -94,7 +94,8 @@ def bestehende_jobs() -> dict[str, str]:
 
 def cron(*args: str) -> str:
     r = subprocess.run([str(NAGI_CLI), "cron", *args], capture_output=True, text=True)
-    if r.returncode != 0:
+    # Achtung: `hermes cron` liefert auch bei Fehlern Exit 0 — daher Ausgabe prüfen.
+    if r.returncode != 0 or "Failed" in r.stdout or "Failed" in r.stderr:
         raise RuntimeError(f"nagi cron {' '.join(args[:2])} → {r.stderr.strip() or r.stdout.strip()}")
     return r.stdout
 
@@ -112,8 +113,9 @@ def anlegen() -> None:
         args = [str(zeiten[job["zeit_key"]])]
         if job["prompt"]:
             args.append(job["prompt"])
+        # --script erwartet NUR den Dateinamen, aufgelöst im scripts/-Ordner des Profils
         args += ["--name", name, "--deliver", "telegram",
-                 "--script", str(SCRIPTS / wrapper[job["modus"]]),
+                 "--script", wrapper[job["modus"]],
                  "--workdir", str(REPO)]
         if job["modus"] is None:
             args.append("--no-agent")
