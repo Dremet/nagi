@@ -16,7 +16,8 @@ import sys
 
 import memory
 
-TAGE_WOERTLICH = 6  # wie viele Tagesdateien wörtlich mitgegeben werden
+TAGE_WOERTLICH = 28   # ~4 Wochen wörtlich (Andrés Wunsch, 22.07.2026)
+WOCHEN_ANZAHL = 4     # dazu die letzten Wochenrückblicke
 
 WOCHENTAGE = ("Montag", "Dienstag", "Mittwoch", "Donnerstag",
               "Freitag", "Samstag", "Sonntag")
@@ -33,18 +34,17 @@ def baue_kontext(modus: str) -> str:
         if inhalt.strip():
             teile.append(f"\n## {titel}\n\n{inhalt.strip()}")
 
-    # Beim Wochenrückblick zählt die ganze Woche, sonst reichen die letzten Tage.
-    n = 7 if modus == "woche" else TAGE_WOERTLICH
-    tage = memory.lese_letzte_tage(n)
+    tage = memory.lese_letzte_tage(TAGE_WOERTLICH)
     if tage:
         teile.append("\n## Letzte Tage")
         for datum, inhalt in tage:
             teile.append(f"\n### {datum}\n\n{inhalt.strip()}")
 
-    if modus == "woche":
-        block("Rückblick der Vorwoche", memory.lese_letzte_woche())
-    else:
-        block("Aktueller Wochenrückblick", memory.lese_aktuelle_woche())
+    wochen = memory.lese_letzte_wochen(WOCHEN_ANZAHL)
+    if wochen:
+        teile.append("\n## Wochenrückblicke")
+        for name, inhalt in wochen:
+            teile.append(f"\n### {name}\n\n{inhalt.strip()}")
 
     block("Ziele (ziele.md)", memory.lese_ziele())
     block("Profil — Nagis Beobachtungen (profil.md)", memory.lese_profil())

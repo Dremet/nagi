@@ -75,7 +75,7 @@ Klare Header + Frontmatter pro Eintrag, damit eine spätere Migration
   (kein eigener Scheduler-Daemon). `src/jobs.py` legt sie idempotent an:
   - **Morgens** (Default 07:00): Morgen-Routine. `context_builder.py` liefert per
     `--script` den Kontext (letzte Tage, Woche, Ziele, Profil) in den Prompt.
-  - **Abends** (Default 21:00): Abend-Routine (Rückblick + dänische Zeile).
+  - **Abends** (Default 22:00): Abend-Routine (Rückblick + dänische Zeile).
   - **Sonntags** (Default 20:00): ausführlicher Wochenrückblick → `daten/wochen/`.
   - **Nachts** (Default 03:00): Backup (`--no-agent`; meldet sich per Telegram nur bei Fehlern).
 - **Gedächtnis**: Nach Gesprächen schreibt Nagi selbst (Datei-Toolset) in die

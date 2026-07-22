@@ -99,6 +99,15 @@ def lese_letzte_woche() -> str:
     return _lese_optional(wochendatei(dt.date.today() - dt.timedelta(days=7)))
 
 
+def lese_letzte_wochen(n: int = 4) -> list[tuple[str, str]]:
+    """Die letzten n vorhandenen Wochenrückblicke als (Name, Inhalt), älteste zuerst."""
+    ordner = daten_dir() / "wochen"
+    if not ordner.is_dir():
+        return []
+    dateien = sorted(ordner.glob("????-W??.md"))[-n:]
+    return [(p.stem, p.read_text(encoding="utf-8")) for p in dateien]
+
+
 def lese_ziele() -> str:
     return _lese_optional(daten_dir() / "ziele.md")
 

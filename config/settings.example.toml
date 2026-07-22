@@ -18,7 +18,7 @@ daten = "~/nagi/daten"
 # `python3 src/jobs.py` erneut ausführen.
 [jobs]
 morgens = "0 7 * * *"
-abends  = "0 21 * * *"
+abends  = "0 22 * * *"
 woche   = "0 20 * * 0"
 backup  = "0 3 * * *"
 
