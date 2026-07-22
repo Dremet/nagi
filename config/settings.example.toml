@@ -1,0 +1,30 @@
+# Vorlage — kopieren und echte Werte eintragen:
+#   cp config/settings.example.toml config/settings.toml
+# settings.toml ist git-ignoriert und bleibt ausschließlich lokal.
+
+[telegram]
+bot_token = ""        # von @BotFather, Format "123456789:AA..."
+allowed_users = ""    # eigene Telegram-User-ID, z.B. "8616111702"
+home_channel = ""     # Chat-ID für proaktive Nachrichten (bei 1:1-Bot = User-ID)
+
+[llm]
+base_url = "http://localhost:1234/v1"
+model = "qwen/qwen3.6-35b-a3b"
+
+[pfade]
+daten = "~/nagi/daten"
+
+# Cron-Ausdrücke in lokaler Zeit (Europe/Berlin). Nach Änderungen
+# `python3 src/jobs.py` erneut ausführen.
+[jobs]
+morgens = "0 7 * * *"
+abends  = "0 21 * * *"
+woche   = "0 20 * * 0"
+backup  = "0 3 * * *"
+
+[backup]
+host = "37.221.198.218"          # scarecrow
+user = "dremet"
+zielpfad = "/home/dremet/nagi-backup/"
+rotation = 14                    # so viele Archive bleiben auf dem Server
+verschluesselung = "none"        # TODO: "age" — Schlüssel bliebe dann lokal!

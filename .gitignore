@@ -14,9 +14,10 @@ config/settings.toml
 *.key
 *.age
 
-# Sicherheitsnetz: lokale Backup-Artefakte niemals committen
+# Sicherheitsnetz: lokale Backup-Artefakte & Logs niemals committen
 *.tar.gz
 backups/
+logs/
 
 # Python
 __pycache__/
